@@ -177,5 +177,4 @@ public class Calculator {
         mem1 = mem2;
         mem2 = new1;
     }
-
 }
