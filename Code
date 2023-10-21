@@ -1,0 +1,181 @@
+public class Calculator {
+
+    public static void main(String[] args) {
+        // testing with normal test cases
+        Calculator c = new Calculator();
+        Calculator c2 = new Calculator(5, 7, "+");
+        System.out.println(c);
+        System.out.println(c2);
+
+        c.setMem1(5);
+
+        c.setOp("+");
+        System.out.println(c);
+        System.out.println(c.perform());
+
+        c.swap();
+        c.setOp("-");
+        System.out.println(c);
+        System.out.println(c.perform());
+
+        c.setOp("*");
+        System.out.println(c.perform());
+
+        c.swap();
+        c.setOp("/");
+        System.out.println(c);
+        System.out.println(c.perform());
+
+        System.out.println(c);
+        System.out.println("mem2 is " + c.getMem2());
+
+        System.out.println(c.performDiv());
+
+        c.setMem2(0);
+        System.out.println(c.perform());
+        System.out.println(c);
+
+        // testing with 0's
+        c.setMem1(0);
+        c.setMem2(2);
+        c.setOp("/");
+        System.out.println(c);
+        System.out.println(c.perform());
+
+        System.out.println(c);
+        System.out.println(c.perform());
+
+        // testing with negatives
+        c.setMem1(-1);
+        c.setMem2(1);
+        c.setOp("^");
+        System.out.println(c);
+        System.out.println(c.perform());
+
+        System.out.println(c);
+        System.out.println(c.perform());
+
+        // testing with invalid op
+        Calculator calc = new Calculator(1, 2, " ");
+        System.out.println(calc.perform());
+
+        calc.setMem1(-1);
+        calc.setMem2(1);
+        System.out.println(calc);
+        System.out.println(calc.perform());
+
+    }
+
+    // variables
+    private int mem1;
+    private int mem2;
+    private String op;
+
+    // constructors
+    public Calculator() {
+        mem1 = 0;
+        mem2 = 0;
+        op = " ";
+    }
+
+    // takes argument from the mutators
+    // in the case newOp is invalid, op is defaulted to a space
+    public Calculator(int op1, int op2, String newOp) {
+        setMem1(op1);
+        setMem2(op2);
+        if (newOp.equals("+") || newOp.equals("-") || newOp.equals("/") || newOp.equals("*") || newOp.equals("^")) {
+            setOp(newOp);
+        } else {
+            newOp = " ";
+            op = newOp;
+        }
+    }
+
+    // accessors
+
+    // gets the private variables so they can be used in the methods
+    public int getMem1() {
+        return mem1;
+    }
+
+    public int getMem2() {
+        return mem2;
+    }
+
+    public String getOp() {
+        return op;
+    }
+
+    // mutators
+
+    // sets op1 and op2 to mem1 and mem2, respectively
+    public void setMem1(int op1) {
+        mem1 = op1;
+    }
+
+    public void setMem2(int op2) {
+        mem2 = op2;
+    }
+
+    // sets newOp to op
+    // in the case that newOp is invalid, nothing happens
+    public void setOp(String newOp) {
+        if (newOp.equals("+") || newOp.equals("-") || newOp.equals("/") || newOp.equals("*") || newOp.equals("^")) {
+            op = newOp;
+        }
+    }
+
+    // methods
+
+    // this method gives a visualization of what the calculator is doing
+    public String toString() {
+        return mem1 + " " + op + " " + mem2;
+    }
+
+    // this method does the actual operation between mem1 and mem2 and returns a singular result, which is the total
+    // the op must be a valid operator, otherwise mem2 will be returned
+    // in the case that mem2 = 0, the total is automatically set to 0 because division by 0 causes an error
+    // mem2 is now the total
+    public int perform() {
+        int total = mem2;
+        if (op.equals("+")) {
+            total = mem1 + mem2;
+        } else if (op.equals("-")) {
+            total = mem1 - mem2;
+        } else if (op.equals("*")) {
+            total = mem1 * mem2;
+        } else if ((op.equals("/")) && (mem2 != 0)) {
+            total = mem1 / mem2;
+        } else if ((op.equals("/")) && (mem2 == 0)) {
+            total = 0;
+        } else if (op.equals("^")) {
+            total = (int) Math.pow(mem1, mem2);
+        }
+        mem2 = total;
+        return total;
+    }
+
+    // this method specifically divides mem1 by mem2
+    // returns a double, unlike perform(), which rounds down to return an int
+    // also takes in the case where mem2 = 0, in which the total is 0.0 (double)
+    public double performDiv() {
+        double total = 0.0;
+        if ((op.equals("/")) && (mem2 != 0)) {
+            total = (double) mem1 / mem2;
+        } else {
+            total = 0.0;
+        }
+        return total;
+    }
+
+    // swaps the values of mem1 and mem2
+    // creates a new variable new1 which has the contents of mem1
+    // mem1 changes to mem2
+    // mem2 changes to new1, which had the contents of mem1
+    public void swap() {
+        int new1 = mem1;
+        mem1 = mem2;
+        mem2 = new1;
+    }
+
+}
